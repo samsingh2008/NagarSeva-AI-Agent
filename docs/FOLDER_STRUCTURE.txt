@@ -1,0 +1,292 @@
+NagarSeva - Complete Project Structure
+=====================================
+
+NagarSeva/
+│
+├── 📁 client/                          # Frontend - Next.js + React
+│   │
+│   ├── 📁 app/                         # Next.js App Router
+│   │   ├── 📁 (routes)/               # Route group (optional organization)
+│   │   │   ├── page.tsx               # Feature pages go here
+│   │   │   └── layout.tsx             # Feature layout (optional)
+│   │   │
+│   │   ├── 📁 api/                    # Optional Next.js API routes
+│   │   │   └── [...].ts               # API proxy routes (optional)
+│   │   │
+│   │   ├── layout.tsx                 # Root layout component
+│   │   └── page.tsx                   # Homepage
+│   │
+│   ├── 📁 components/                 # Reusable React Components
+│   │   ├── 📁 common/                # Shared layout components
+│   │   │   ├── Header.tsx
+│   │   │   ├── Footer.tsx
+│   │   │   ├── Navigation.tsx
+│   │   │   └── Sidebar.tsx
+│   │   │
+│   │   └── 📁 ui/                     # Atomic UI components
+│   │       ├── Button.tsx
+│   │       ├── Card.tsx
+│   │       ├── Modal.tsx
+│   │       ├── Input.tsx
+│   │       ├── Dropdown.tsx
+│   │       └── Badge.tsx
+│   │
+│   ├── 📁 hooks/                      # Custom React Hooks
+│   │   ├── useApi.ts                 # API fetching hook
+│   │   ├── useAuth.ts                # Auth logic hook
+│   │   ├── useFetch.ts               # Generic fetch hook
+│   │   └── useLocalStorage.ts        # LocalStorage hook
+│   │
+│   ├── 📁 lib/                        # Utility libraries & clients
+│   │   ├── axios.ts                  # Axios instance configuration
+│   │   ├── api-client.ts             # API client wrapper
+│   │   └── constants.ts              # App constants
+│   │
+│   ├── 📁 styles/                     # Global styles
+│   │   └── globals.css               # Tailwind + global styles
+│   │
+│   ├── 📁 utils/                      # Pure utility functions
+│   │   ├── formatters.ts             # String/date formatting
+│   │   ├── validators.ts             # Input validation
+│   │   ├── converters.ts             # Data type conversion
+│   │   └── helpers.ts                # General helpers
+│   │
+│   ├── 📁 public/                     # Static assets
+│   │   ├── images/
+│   │   ├── icons/
+│   │   ├── fonts/
+│   │   └── favicon.ico
+│   │
+│   ├── package.json                  # Client dependencies
+│   ├── tsconfig.json                 # TypeScript config
+│   ├── tailwind.config.js            # Tailwind configuration
+│   ├── postcss.config.js             # PostCSS configuration
+│   ├── next.config.js                # Next.js configuration
+│   ├── .eslintrc.json                # ESLint config
+│   ├── .gitignore                    # Git ignore rules
+│   └── .env.local                    # Local env variables
+│
+├── 📁 server/                         # Backend - Express + Node.js
+│   │
+│   ├── 📁 src/                        # Source code
+│   │   │
+│   │   ├── 📁 routes/                # API Route definitions
+│   │   │   ├── index.ts              # Route aggregator
+│   │   │   ├── userRoutes.ts         # User-related routes
+│   │   │   ├── issueRoutes.ts        # Issue-related routes
+│   │   │   ├── reportRoutes.ts       # Report-related routes
+│   │   │   └── aiRoutes.ts           # AI analysis routes
+│   │   │
+│   │   ├── 📁 controllers/           # Request Handlers
+│   │   │   ├── userController.ts
+│   │   │   ├── issueController.ts
+│   │   │   ├── reportController.ts
+│   │   │   └── aiController.ts
+│   │   │
+│   │   ├── 📁 models/                # MongoDB Schemas (Mongoose)
+│   │   │   ├── User.ts               # User schema
+│   │   │   ├── Issue.ts              # Issue schema
+│   │   │   ├── Report.ts             # Report schema
+│   │   │   ├── Resolution.ts         # Resolution schema
+│   │   │   └── index.ts              # Export all models
+│   │   │
+│   │   ├── 📁 services/              # Business Logic
+│   │   │   ├── userService.ts        # User business logic
+│   │   │   ├── issueService.ts       # Issue business logic
+│   │   │   ├── reportService.ts      # Report generation
+│   │   │   ├── geminiService.ts      # Gemini AI integration ⭐
+│   │   │   └── analyticsService.ts   # Analytics logic
+│   │   │
+│   │   ├── 📁 middleware/            # Express Middleware
+│   │   │   ├── auth.ts               # Authentication middleware
+│   │   │   ├── errorHandler.ts       # Error handling
+│   │   │   ├── validation.ts         # Request validation
+│   │   │   ├── logging.ts            # Request logging
+│   │   │   ├── cors.ts               # CORS configuration
+│   │   │   └── index.ts              # Middleware aggregator
+│   │   │
+│   │   ├── 📁 config/                # Configuration Files
+│   │   │   ├── database.ts           # MongoDB connection ⭐
+│   │   │   ├── gemini.ts             # Gemini AI setup ⭐
+│   │   │   ├── constants.ts          # App constants
+│   │   │   └── index.ts              # Config aggregator
+│   │   │
+│   │   ├── 📁 utils/                 # Utility Functions
+│   │   │   ├── logger.ts             # Logging utility
+│   │   │   ├── errorTypes.ts         # Custom error classes
+│   │   │   ├── validators.ts         # Validation helpers
+│   │   │   ├── formatters.ts         # Response formatters
+│   │   │   └── helpers.ts            # General helpers
+│   │   │
+│   │   ├── 📁 schemas/               # Validation Schemas (Joi/Zod)
+│   │   │   ├── userSchema.ts
+│   │   │   ├── issueSchema.ts
+│   │   │   └── reportSchema.ts
+│   │   │
+│   │   └── index.ts                  # Server entry point ⭐
+│   │
+│   ├── 📁 dist/                       # Compiled JavaScript (auto-generated)
+│   │
+│   ├── package.json                  # Server dependencies
+│   ├── tsconfig.json                 # TypeScript configuration
+│   ├── .eslintrc.json                # ESLint configuration
+│   ├── .gitignore                    # Git ignore rules
+│   └── nodemon.json                  # Nodemon auto-reload config
+│
+├── 📁 docs/                           # Documentation
+│   ├── README.md                      # Main project documentation
+│   ├── ARCHITECTURE.md                # System architecture explanation
+│   ├── API.md                         # API endpoints reference
+│   ├── SETUP.md                       # Setup & installation guide
+│   ├── FOLDER_STRUCTURE.txt          # This file
+│   ├── DEPLOYMENT.md                 # Deployment guide (optional)
+│   ├── CONTRIBUTING.md               # Contributing guidelines (optional)
+│   └── TROUBLESHOOTING.md            # Common issues & fixes (optional)
+│
+├── .gitignore                         # Global git ignore
+├── .env.example                       # Environment template
+├── package.json                       # Root workspace config
+├── README.md                          # Main project README
+├── LICENSE                            # MIT License (optional)
+└── .gitattributes                    # Git attributes (optional)
+
+
+KEY FOLDERS EXPLAINED
+====================
+
+CLIENT SIDE (Next.js Frontend)
+==============================
+
+📁 app/
+  └─ Next.js App Router directory. Contains all page routes and layouts.
+     Use (routes) folder to group related pages together.
+
+📁 components/
+  ├─ common/ → Shared layout components used across multiple pages
+  └─ ui/     → Reusable atomic UI components (Button, Modal, etc.)
+
+📁 hooks/
+  └─ Custom React hooks for logic reuse and state management
+     Examples: useApi, useAuth, useFetch, useLocalStorage
+
+📁 lib/
+  └─ Utility libraries and API client setup
+     Example: axios instance, API wrapper functions
+
+📁 styles/
+  └─ Global CSS and Tailwind directives
+     All component-specific styles go in Tailwind classes
+
+📁 utils/
+  └─ Pure utility functions (formatters, validators, helpers)
+
+
+SERVER SIDE (Express Backend)
+=============================
+
+📁 routes/
+  └─ Define API endpoints and route handling
+     Organize by feature (userRoutes, issueRoutes, etc.)
+
+📁 controllers/
+  └─ Handle HTTP requests and responses
+     Call appropriate services for business logic
+
+📁 models/
+  └─ MongoDB schemas using Mongoose
+     Define data structure and relationships
+
+📁 services/
+  ├─ Contain business logic (rules, calculations, etc.)
+  ├─ Interact with models and databases
+  ├─ geminiService.ts ⭐ → Gemini AI integration
+  └─ Reusable across multiple controllers
+
+📁 middleware/
+  └─ Express middleware for cross-cutting concerns
+     Auth, validation, error handling, logging
+
+📁 config/
+  ├─ database.ts ⭐ → MongoDB connection setup
+  ├─ gemini.ts ⭐   → Gemini AI initialization
+  └─ Other configuration files
+
+📁 utils/
+  └─ Helper functions used across services
+     Validators, formatters, error types, loggers
+
+📁 schemas/
+  └─ Request validation schemas (Joi, Zod, etc.)
+     Validate input before processing
+
+
+SPECIAL FILES
+=============
+
+⭐ src/index.ts              → Express app setup & server startup
+⭐ config/database.ts        → MongoDB connection (Mongoose setup)
+⭐ config/gemini.ts          → Google Gemini AI initialization
+⭐ services/geminiService.ts → AI-related business logic
+
+
+CONFIGURATION FILES
+===================
+
+Client:
+  - tsconfig.json      → TypeScript configuration with path aliases
+  - tailwind.config.js → Tailwind CSS theme & plugins
+  - postcss.config.js  → PostCSS configuration (for Tailwind)
+  - next.config.js     → Next.js optimization & settings
+  - package.json       → Dependencies & scripts
+
+Server:
+  - tsconfig.json      → TypeScript configuration
+  - .eslintrc.json     → Code linting rules
+  - package.json       → Dependencies & scripts
+  - .env (root)        → Environment variables
+
+Root:
+  - .gitignore         → Files to exclude from git
+  - .env.example       → Template for environment variables
+  - package.json       → Workspace configuration
+
+
+DEVELOPMENT WORKFLOW
+====================
+
+1. Create feature branch:
+   git checkout -b feature/my-feature
+
+2. Make changes:
+   - Frontend: Edit components in client/
+   - Backend: Edit services/controllers in server/
+
+3. Test locally:
+   npm run dev (from root)
+
+4. Commit changes:
+   git add .
+   git commit -m "feat: description"
+
+5. Push & create PR
+
+
+NEXT STEPS
+==========
+
+1. Read docs/README.md for project overview
+2. Read docs/SETUP.md to set up your environment
+3. Read docs/ARCHITECTURE.md to understand the design
+4. Read docs/API.md for API reference
+5. Start implementing features!
+
+
+Legend:
+=======
+⭐ = Important/Key file
+📁 = Directory/Folder
+.ts = TypeScript file
+.tsx = TypeScript React file
+.js = JavaScript file
+.json = JSON configuration
+
