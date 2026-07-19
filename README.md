@@ -211,6 +211,40 @@ npm start
 - `JWT_SECRET` - JWT signing secret (optional, for auth)
 - `CORS_ORIGIN` - CORS allowed origin (default: http://localhost:3000)
 
+## 🎯 Hackathon Demo Flow
+
+NagarSeva is designed for a fast, compelling live demo:
+
+1. Open the complaint form and submit a civic issue such as a streetlight outage or broken road.
+2. The backend analyzes the complaint, infers the likely issue type and severity, and recommends the responsible authority.
+3. The complaint is stored and can be tracked through the tracking page with a unique complaint ID.
+4. The heatmap and safer-route pages show how the system turns complaint data into actionable civic insights.
+5. The dashboard aggregates ward-level responsiveness metrics for a real-time summary view.
+
+### Demo-safe behavior
+
+The platform works even when Gemini AI or external services are not available. In that case, it uses a deterministic fallback analysis so the demo remains smooth and reliable.
+
+### Quick start for demo
+
+```bash
+cd server
+npm install
+npm run dev
+```
+
+In a second terminal:
+
+```bash
+cd client
+npm install
+npm run dev
+```
+
+Then visit:
+- http://localhost:3000 for the complaint form
+- http://localhost:5000/health for the backend health check
+
 ## 📚 Documentation
 
 - **[API Documentation](./docs/API.md)** - API endpoints and payloads

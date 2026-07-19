@@ -6,6 +6,7 @@ import { createComplaintSchema, updateComplaintStatusSchema } from '../schemas/c
 import { evaluateEscalation, buildSafetyHeatmap } from '../services/analyticsService.js';
 import { recommendSaferRoute } from '../services/routeSafetyService.js';
 import { buildDashboardSummary } from '../services/dashboardService.js';
+import { analyzeComplaint } from '../services/aiAnalysisService.js';
 
 const sendSuccess = (res: Response, statusCode: number, data: unknown, message: string) => {
   res.status(statusCode).json({ success: true, data, message });
@@ -31,10 +32,18 @@ export const createComplaint = async (req: Request, res: Response) => {
       imageUrl = await uploadImageToCloudinary(file.buffer, file.originalname);
     }
 
-    const routingDecision = routingService.routeComplaint({
+    const analysis = analyzeComplaint({
+      description: parsed.data.description,
+      latitude: parsed.data.latitude,
+      longitude: parsed.data.longitude,
       issueType: parsed.data.issueType,
-      category: parsed.data.issueType,
       severity: parsed.data.severity,
+    });
+
+    const routingDecision = routingService.routeComplaint({
+      issueType: analysis.inferredIssueType,
+      category: analysis.inferredIssueType,
+      severity: analysis.severity,
       ward: parsed.data.ward,
       location: {
         latitude: parsed.data.latitude,
@@ -53,15 +62,18 @@ export const createComplaint = async (req: Request, res: Response) => {
       },
       latitude: parsed.data.latitude,
       longitude: parsed.data.longitude,
-      issueType: parsed.data.issueType || 'General',
-      severity: parsed.data.severity || 'Medium',
+      issueType: analysis.inferredIssueType,
+      severity: analysis.severity,
       address: parsed.data.address,
       ward: parsed.data.ward,
       responsibleAuthority: routingDecision.responsibleAuthority,
       status: 'Pending',
       aiAnalysis: {
         source: 'demo',
-        inferredIssueType: parsed.data.issueType || 'General',
+        inferredIssueType: analysis.inferredIssueType,
+        severity: analysis.severity,
+        responsibleAuthority: analysis.responsibleAuthority,
+        summary: analysis.summary,
         routing: routingDecision,
       },
       escalationLevel: routingDecision.escalationLevel,
