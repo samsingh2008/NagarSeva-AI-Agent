@@ -4,7 +4,10 @@ let geminiClient: GoogleGenAI | null = null;
 let geminiClientKey: string | null = null;
 export const DEFAULT_GEMINI_MODEL = 'gemini-flash-latest';
 
-export const getGeminiApiKey = () => process.env.GEMINI_API_KEY?.trim() || '';
+export const getGeminiApiKey = () => {
+  console.log("ENV KEY:", process.env.GEMINI_API_KEY);
+  return process.env.GEMINI_API_KEY?.trim() || "";
+};
 
 export const getGeminiModel = () => process.env.GEMINI_MODEL?.trim() || DEFAULT_GEMINI_MODEL;
 
