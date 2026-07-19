@@ -5,6 +5,8 @@
 import { useState, useCallback } from 'react';
 import { validateComplaintForm, ValidationError } from '@/utils/validation';
 
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+
 export interface ComplaintFormState {
   image: File | null;
   latitude: number | null;
@@ -170,7 +172,6 @@ export const useComplaintForm = () => {
    */
   const handleSubmit = useCallback(
     async (onSubmit: () => Promise<void>) => {
-      // Validate form first
       if (!validateForm()) {
         return;
       }
@@ -201,6 +202,32 @@ export const useComplaintForm = () => {
     [validateForm]
   );
 
+  const submitComplaint = useCallback(async (payload: { image?: File | null; latitude: number | null; longitude: number | null; description: string }) => {
+    const formData = new FormData();
+    if (payload.image) {
+      formData.append('image', payload.image);
+    }
+    formData.append('description', payload.description);
+    if (payload.latitude !== null) {
+      formData.append('latitude', payload.latitude.toString());
+    }
+    if (payload.longitude !== null) {
+      formData.append('longitude', payload.longitude.toString());
+    }
+
+    const response = await fetch(`${apiBaseUrl}/complaints`, {
+      method: 'POST',
+      body: formData,
+    });
+
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      throw new Error(data.message || 'Failed to submit complaint');
+    }
+
+    return data;
+  }, []);
+
   return {
     ...state,
     handleImageChange,
@@ -210,5 +237,6 @@ export const useComplaintForm = () => {
     clearMessages,
     validateForm,
     handleSubmit,
+    submitComplaint,
   };
 };

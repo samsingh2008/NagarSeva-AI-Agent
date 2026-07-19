@@ -26,6 +26,7 @@ export default function ComplaintForm() {
     resetForm,
     clearMessages,
     handleSubmit,
+    submitComplaint,
   } = useComplaintForm();
 
   const [preview, setPreview] = useState<string | null>(null);
@@ -60,23 +61,7 @@ export default function ComplaintForm() {
         throw new Error('Missing required fields');
       }
 
-      // Create FormData for multipart/form-data
-      const formData = new FormData();
-      formData.append('image', image);
-      formData.append('latitude', latitude.toString());
-      formData.append('longitude', longitude.toString());
-      formData.append('description', description);
-
-      // Submit to backend
-      const response = await fetch('/api/complaints', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || 'Failed to submit complaint');
-      }
+      await submitComplaint({ image, latitude, longitude, description });
 
       // Reset form on successful submission
       resetForm();
@@ -325,7 +310,7 @@ export default function ComplaintForm() {
                   d="M12 3v1m6.364.636l-.707-.707M21 12h-1m-.636 6.364l-.707.707M12 21v-1m-6.364-.636l.707.707M3 12h1m.636-6.364l.707-.707"
                 />
               </svg>
-              <span>Submitting...</span>
+              <span>{image ? 'Uploading evidence...' : 'Submitting...'}</span>
             </>
           ) : (
             <span>Submit Complaint</span>
