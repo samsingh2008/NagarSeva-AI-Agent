@@ -5,4 +5,6 @@ export declare const getComplaintById: (req: Request, res: Response) => Promise<
 export declare const updateComplaintStatus: (req: Request, res: Response) => Promise<void>;
 export declare const checkEscalation: (req: Request, res: Response) => Promise<void>;
 export declare const getSafetyHeatmap: (_req: Request, res: Response) => Promise<void>;
+export declare const getRouteRecommendation: (req: Request, res: Response) => Promise<void>;
+export declare const getDashboardSummary: (_req: Request, res: Response) => Promise<void>;
 //# sourceMappingURL=complaintController.d.ts.map

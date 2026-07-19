@@ -3,6 +3,8 @@ import routingService from '../services/routingService.js';
 import { uploadImageToCloudinary } from '../services/imageUploadService.js';
 import { createComplaintSchema, updateComplaintStatusSchema } from '../schemas/complaintSchema.js';
 import { evaluateEscalation, buildSafetyHeatmap } from '../services/analyticsService.js';
+import { recommendSaferRoute } from '../services/routeSafetyService.js';
+import { buildDashboardSummary } from '../services/dashboardService.js';
 const sendSuccess = (res, statusCode, data, message) => {
     res.status(statusCode).json({ success: true, data, message });
 };
@@ -134,6 +136,37 @@ export const getSafetyHeatmap = async (_req, res) => {
     }
     catch (error) {
         const message = error instanceof Error ? error.message : 'Failed to fetch safety heatmap';
+        return sendError(res, 500, message);
+    }
+};
+export const getRouteRecommendation = async (req, res) => {
+    try {
+        const { origin, destination, time } = req.body || {};
+        if (!origin || !destination || typeof time !== 'string') {
+            return sendError(res, 400, 'Origin, destination, and time are required');
+        }
+        const complaints = await complaintService.getComplaints();
+        const heatmap = buildSafetyHeatmap(complaints);
+        const recommendation = recommendSaferRoute({
+            origin: { latitude: Number(origin.latitude), longitude: Number(origin.longitude) },
+            destination: { latitude: Number(destination.latitude), longitude: Number(destination.longitude) },
+            time,
+        }, heatmap);
+        return sendSuccess(res, 200, recommendation, 'Route recommendation generated successfully');
+    }
+    catch (error) {
+        const message = error instanceof Error ? error.message : 'Failed to generate route recommendation';
+        return sendError(res, 500, message);
+    }
+};
+export const getDashboardSummary = async (_req, res) => {
+    try {
+        const complaints = await complaintService.getComplaints();
+        const summary = buildDashboardSummary(complaints);
+        return sendSuccess(res, 200, summary, 'Dashboard summary fetched successfully');
+    }
+    catch (error) {
+        const message = error instanceof Error ? error.message : 'Failed to fetch dashboard summary';
         return sendError(res, 500, message);
     }
 };

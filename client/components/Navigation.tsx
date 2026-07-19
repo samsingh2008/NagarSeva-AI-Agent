@@ -7,10 +7,12 @@ export default function Navigation() {
         <Link href="/" className="text-lg font-semibold text-slate-900">
           NagarSeva
         </Link>
-        <div className="flex gap-4 text-sm text-slate-700">
+        <div className="flex flex-wrap gap-4 text-sm text-slate-700">
           <Link href="/complaint" className="hover:text-blue-600">Report</Link>
           <Link href="/tracking" className="hover:text-blue-600">Tracking</Link>
           <Link href="/heatmap" className="hover:text-blue-600">Heatmap</Link>
+          <Link href="/route-recommendation" className="hover:text-blue-600">Routes</Link>
+          <Link href="/dashboard" className="hover:text-blue-600">Dashboard</Link>
         </div>
       </div>
     </nav>
