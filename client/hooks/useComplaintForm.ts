@@ -4,6 +4,7 @@
 
 import { useState, useCallback } from 'react';
 import { apiUrl } from '@/lib/api';
+import { ComplaintApiResponse } from '@/lib/complaints';
 import { validateComplaintForm, ValidationError } from '@/utils/validation';
 
 export interface ComplaintFormState {
@@ -201,7 +202,7 @@ export const useComplaintForm = () => {
     [validateForm]
   );
 
-  const submitComplaint = useCallback(async (payload: { image?: File | null; latitude: number | null; longitude: number | null; description: string }) => {
+  const submitComplaint = useCallback(async (payload: { image?: File | null; latitude: number | null; longitude: number | null; description: string }): Promise<ComplaintApiResponse> => {
     const formData = new FormData();
     if (payload.image) {
       formData.append('image', payload.image);
@@ -219,7 +220,7 @@ export const useComplaintForm = () => {
       body: formData,
     });
 
-    const data = await response.json().catch(() => ({}));
+    const data = (await response.json().catch(() => ({}))) as ComplaintApiResponse;
     if (!response.ok) {
       throw new Error(data.message || 'Failed to submit complaint');
     }

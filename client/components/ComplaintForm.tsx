@@ -6,7 +6,9 @@
 'use client';
 
 import { useRef, useState } from 'react';
+import AIAnalysis from '@/components/AIAnalysis';
 import { useComplaintForm } from '@/hooks/useComplaintForm';
+import { ComplaintRecord } from '@/lib/complaints';
 
 export default function ComplaintForm() {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -30,6 +32,7 @@ export default function ComplaintForm() {
   } = useComplaintForm();
 
   const [preview, setPreview] = useState<string | null>(null);
+  const [submittedComplaint, setSubmittedComplaint] = useState<ComplaintRecord | null>(null);
 
   /**
    * Handle image file selection with preview
@@ -55,13 +58,19 @@ export default function ComplaintForm() {
   const onFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     clearMessages();
+    setSubmittedComplaint(null);
 
     await handleSubmit(async () => {
       if (!image || latitude === null || longitude === null) {
         throw new Error('Missing required fields');
       }
 
-      await submitComplaint({ image, latitude, longitude, description });
+      const response = await submitComplaint({ image, latitude, longitude, description });
+
+      console.log("Full response:", response);
+      console.log("Response.data:", response.data);
+
+      setSubmittedComplaint(response.data || null);
 
       // Reset form on successful submission
       resetForm();
@@ -110,6 +119,8 @@ export default function ComplaintForm() {
           <p className="text-red-800 font-medium">{errorMessage}</p>
         </div>
       )}
+
+      {submittedComplaint && <AIAnalysis complaint={submittedComplaint} className="mb-6" />}
 
       <form onSubmit={onFormSubmit} className="space-y-6">
         {/* Image Upload Section */}

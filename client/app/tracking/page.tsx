@@ -1,7 +1,9 @@
 import { apiUrl } from '@/lib/api';
+import AIAnalysis from '@/components/AIAnalysis';
+import { ComplaintRecord } from '@/lib/complaints';
 import { Suspense } from 'react';
 
-async function fetchTrackingData() {
+async function fetchTrackingData(): Promise<ComplaintRecord[]> {
   const response = await fetch(apiUrl('/complaints'), {
     cache: 'no-store',
   });
@@ -31,7 +33,7 @@ async function TrackingContent() {
               No complaints have been submitted yet. Submit one from the complaint form to see tracking details.
             </div>
           ) : (
-            complaints.map((complaint: any) => (
+            complaints.map((complaint) => (
               <article key={complaint._id || complaint.complaintId} className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
                 <div className="flex items-center justify-between">
                   <h2 className="text-lg font-semibold text-slate-900">{complaint.complaintId || 'Complaint'}</h2>
@@ -43,7 +45,7 @@ async function TrackingContent() {
                 <dl className="mt-4 space-y-2 text-sm text-slate-700">
                   <div className="flex justify-between">
                     <dt className="font-medium">Severity</dt>
-                    <dd>{complaint.severity || 'Medium'}</dd>
+                    <dd>{complaint.severity || 'Pending analysis'}</dd>
                   </div>
                   <div className="flex justify-between">
                     <dt className="font-medium">Authority</dt>
@@ -54,6 +56,7 @@ async function TrackingContent() {
                     <dd>{complaint.escalationLevel || 0}</dd>
                   </div>
                 </dl>
+                <AIAnalysis complaint={complaint} className="mt-5 border-slate-100 bg-slate-50 shadow-none" />
               </article>
             ))
           )}
