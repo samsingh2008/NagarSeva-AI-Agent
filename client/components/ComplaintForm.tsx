@@ -56,6 +56,7 @@ export default function ComplaintForm() {
    * Handle form submission
    */
   const onFormSubmit = async (e: React.FormEvent) => {
+    console.log("FORM SUBMITTED");
     e.preventDefault();
     clearMessages();
     setSubmittedComplaint(null);
@@ -71,9 +72,10 @@ export default function ComplaintForm() {
       console.log("Response.data:", response.data);
 
       setSubmittedComplaint(response.data || null);
+      console.log("submittedComplaint will be:", response.data);
 
       // Reset form on successful submission
-      resetForm();
+      
       setPreview(null);
       if (fileInputRef.current) {
         fileInputRef.current.value = '';
