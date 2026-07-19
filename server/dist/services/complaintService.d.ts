@@ -53,6 +53,16 @@ declare class ComplaintService {
         updatedAt: Date;
         resolvedAt: Date | undefined;
     } | null>;
+    updateComplaintEscalation(id: string, status: string, escalationLevel: number): Promise<(mongoose.Document<unknown, {}, import("../models/complaint.js").ComplaintDocument, {}, {}> & import("../models/complaint.js").ComplaintDocument & Required<{
+        _id: mongoose.Types.ObjectId;
+    }> & {
+        __v: number;
+    }) | {
+        status: string;
+        escalationLevel: number;
+        updatedAt: Date;
+        resolvedAt: Date | undefined;
+    } | null>;
 }
 declare const _default: ComplaintService;
 export default _default;

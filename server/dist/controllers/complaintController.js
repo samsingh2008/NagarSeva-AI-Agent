@@ -2,6 +2,7 @@ import complaintService from '../services/complaintService.js';
 import routingService from '../services/routingService.js';
 import { uploadImageToCloudinary } from '../services/imageUploadService.js';
 import { createComplaintSchema, updateComplaintStatusSchema } from '../schemas/complaintSchema.js';
+import { evaluateEscalation, buildSafetyHeatmap } from '../services/analyticsService.js';
 const sendSuccess = (res, statusCode, data, message) => {
     res.status(statusCode).json({ success: true, data, message });
 };
@@ -100,6 +101,39 @@ export const updateComplaintStatus = async (req, res) => {
     }
     catch (error) {
         const message = error instanceof Error ? error.message : 'Failed to update complaint status';
+        return sendError(res, 500, message);
+    }
+};
+export const checkEscalation = async (req, res) => {
+    try {
+        const complaint = await complaintService.getComplaintById(req.params.id);
+        if (!complaint) {
+            return sendError(res, 404, 'Complaint not found');
+        }
+        const result = evaluateEscalation(complaint);
+        const updatedComplaint = await complaintService.updateComplaintEscalation(req.params.id, result.updatedComplaint.status, result.updatedComplaint.escalationLevel);
+        if (!updatedComplaint) {
+            return sendError(res, 404, 'Complaint not found');
+        }
+        const responseComplaint = {
+            ...updatedComplaint,
+            escalationLevel: result.updatedComplaint.escalationLevel,
+        };
+        return sendSuccess(res, 200, responseComplaint, result.shouldEscalate ? 'Complaint escalated successfully' : 'No escalation required');
+    }
+    catch (error) {
+        const message = error instanceof Error ? error.message : 'Failed to check escalation';
+        return sendError(res, 500, message);
+    }
+};
+export const getSafetyHeatmap = async (_req, res) => {
+    try {
+        const complaints = await complaintService.getComplaints();
+        const heatmap = buildSafetyHeatmap(complaints);
+        return sendSuccess(res, 200, heatmap, 'Safety heatmap fetched successfully');
+    }
+    catch (error) {
+        const message = error instanceof Error ? error.message : 'Failed to fetch safety heatmap';
         return sendError(res, 500, message);
     }
 };

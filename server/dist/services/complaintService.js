@@ -71,6 +71,29 @@ class ComplaintService {
         }, { new: true });
         return complaint;
     }
+    async updateComplaintEscalation(id, status, escalationLevel) {
+        if (!this.isDatabaseAvailable()) {
+            const complaint = ComplaintService.inMemoryComplaints.find((item) => item._id === id);
+            if (!complaint) {
+                return null;
+            }
+            const updated = {
+                ...complaint,
+                status,
+                escalationLevel,
+                updatedAt: new Date(),
+                resolvedAt: status === 'Resolved' ? new Date() : undefined,
+            };
+            ComplaintService.inMemoryComplaints = ComplaintService.inMemoryComplaints.map((item) => (item._id === id ? updated : item));
+            return updated;
+        }
+        const complaint = await Complaint.findByIdAndUpdate(id, {
+            status,
+            escalationLevel,
+            resolvedAt: status === 'Resolved' ? new Date() : undefined,
+        }, { new: true });
+        return complaint;
+    }
 }
 ComplaintService.inMemoryComplaints = [];
 export default new ComplaintService();

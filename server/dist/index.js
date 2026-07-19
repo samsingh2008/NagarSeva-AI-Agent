@@ -3,6 +3,7 @@ import cors from 'cors';
 import 'dotenv/config';
 import connectDB from './config/database.js';
 import complaintRoutes from './routes/complaints.js';
+import safetyRoutes from './routes/safety.js';
 import { errorHandler } from './middleware/errorHandler.js';
 const app = express();
 const requestedPort = Number(process.env.PORT || 5000);
@@ -15,6 +16,7 @@ app.get('/health', (req, res) => {
     res.status(200).json({ message: 'Server is running' });
 });
 app.use('/api/complaints', complaintRoutes);
+app.use('/api/safety', safetyRoutes);
 app.use(errorHandler);
 const listenOnPort = (port) => {
     return new Promise((resolve, reject) => {

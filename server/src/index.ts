@@ -3,6 +3,7 @@ import cors from 'cors';
 import 'dotenv/config';
 import connectDB from './config/database.js';
 import complaintRoutes from './routes/complaints.js';
+import safetyRoutes from './routes/safety.js';
 import { errorHandler } from './middleware/errorHandler.js';
 
 const app = express();
@@ -22,6 +23,7 @@ app.get('/health', (req, res) => {
 });
 
 app.use('/api/complaints', complaintRoutes);
+app.use('/api/safety', safetyRoutes);
 
 app.use(errorHandler);
 
