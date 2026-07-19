@@ -18,15 +18,20 @@ export interface ComplaintInput {
     uploadedAt?: Date;
   };
   description?: string;
+  category?: string | null;
   issueType?: string;
-  severity?: string;
+  severity?: string | null;
+  department?: string | null;
+  summary?: string | null;
+  confidence?: number | null;
+  suggestedActions?: string[] | null;
   latitude?: number;
   longitude?: number;
   address?: string;
   responsibleAuthority?: string;
   ward?: string;
   status?: ComplaintStatus;
-  aiAnalysis?: Record<string, unknown>;
+  aiAnalysis?: Record<string, unknown> | null;
   resolvedAt?: Date;
   escalationLevel?: number;
 }
@@ -57,6 +62,11 @@ const complaintSchema = new Schema<ComplaintDocument>(
       trim: true,
       default: '',
     },
+    category: {
+      type: String,
+      trim: true,
+      default: null,
+    },
     issueType: {
       type: String,
       trim: true,
@@ -65,7 +75,27 @@ const complaintSchema = new Schema<ComplaintDocument>(
     severity: {
       type: String,
       trim: true,
-      default: 'Medium',
+      default: null,
+    },
+    department: {
+      type: String,
+      trim: true,
+      default: null,
+    },
+    summary: {
+      type: String,
+      trim: true,
+      default: null,
+    },
+    confidence: {
+      type: Number,
+      min: 0,
+      max: 1,
+      default: null,
+    },
+    suggestedActions: {
+      type: [String],
+      default: null,
     },
     latitude: {
       type: Number,
@@ -93,7 +123,7 @@ const complaintSchema = new Schema<ComplaintDocument>(
     },
     aiAnalysis: {
       type: Object,
-      default: {},
+      default: null,
     },
     resolvedAt: {
       type: Date,

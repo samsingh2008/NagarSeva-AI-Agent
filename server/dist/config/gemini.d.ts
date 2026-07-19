@@ -1,5 +1,6 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
-declare const genAI: GoogleGenerativeAI | null;
-export declare const getGeminiModel: () => import("@google/generative-ai").GenerativeModel;
-export default genAI;
+import { GoogleGenAI } from '@google/genai';
+export declare const GEMINI_MODEL = "gemini-2.0-flash";
+export declare const isGeminiConfigured: () => boolean;
+export declare const getGeminiClient: () => GoogleGenAI;
+export default getGeminiClient;
 //# sourceMappingURL=gemini.d.ts.map

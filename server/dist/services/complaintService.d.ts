@@ -10,8 +10,14 @@ declare class ComplaintService {
     }> & {
         __v: number;
     }) | {
+        category: string | null;
+        severity: string | null;
+        department: string | null;
+        summary: string | null;
+        confidence: number | null;
+        suggestedActions: string[] | null;
         status: import("../models/complaint.js").ComplaintStatus;
-        aiAnalysis: Record<string, unknown>;
+        aiAnalysis: Record<string, unknown> | null;
         createdAt: Date;
         updatedAt: Date;
         complaintId: string;
@@ -24,7 +30,6 @@ declare class ComplaintService {
         };
         description?: string;
         issueType?: string;
-        severity?: string;
         latitude?: number;
         longitude?: number;
         address?: string;

@@ -10,15 +10,20 @@ export interface ComplaintInput {
         uploadedAt?: Date;
     };
     description?: string;
+    category?: string | null;
     issueType?: string;
-    severity?: string;
+    severity?: string | null;
+    department?: string | null;
+    summary?: string | null;
+    confidence?: number | null;
+    suggestedActions?: string[] | null;
     latitude?: number;
     longitude?: number;
     address?: string;
     responsibleAuthority?: string;
     ward?: string;
     status?: ComplaintStatus;
-    aiAnalysis?: Record<string, unknown>;
+    aiAnalysis?: Record<string, unknown> | null;
     resolvedAt?: Date;
     escalationLevel?: number;
 }

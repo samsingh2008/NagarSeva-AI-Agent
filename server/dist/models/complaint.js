@@ -19,6 +19,11 @@ const complaintSchema = new Schema({
         trim: true,
         default: '',
     },
+    category: {
+        type: String,
+        trim: true,
+        default: null,
+    },
     issueType: {
         type: String,
         trim: true,
@@ -27,7 +32,27 @@ const complaintSchema = new Schema({
     severity: {
         type: String,
         trim: true,
-        default: 'Medium',
+        default: null,
+    },
+    department: {
+        type: String,
+        trim: true,
+        default: null,
+    },
+    summary: {
+        type: String,
+        trim: true,
+        default: null,
+    },
+    confidence: {
+        type: Number,
+        min: 0,
+        max: 1,
+        default: null,
+    },
+    suggestedActions: {
+        type: [String],
+        default: null,
     },
     latitude: {
         type: Number,
@@ -55,7 +80,7 @@ const complaintSchema = new Schema({
     },
     aiAnalysis: {
         type: Object,
-        default: {},
+        default: null,
     },
     resolvedAt: {
         type: Date,
