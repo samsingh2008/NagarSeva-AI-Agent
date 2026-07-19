@@ -123,45 +123,58 @@ const parseGeminiJson = (text: string) => {
   }
 };
 
-export const analyzeComplaintWithGemini = async (input: GeminiComplaintInput): Promise<GeminiComplaintAnalysis | null> => {
+export const analyzeComplaintWithGemini = async (
+  input: GeminiComplaintInput
+): Promise<GeminiComplaintAnalysis | null> => {
   if (!isGeminiConfigured()) {
+    console.log("❌ GEMINI_API_KEY not configured");
     return null;
   }
 
   try {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 10000);
+    const parts: Part[] = [
+      {
+        text: buildPrompt(input.description),
+      },
+    ];
 
-    try {
-      const parts: Part[] = [{ text: buildPrompt(input.description) }];
-
-      if (input.image) {
-        parts.push({
-          inlineData: {
-            data: input.image.buffer.toString('base64'),
-            mimeType: input.image.mimeType,
-          },
-        });
-      }
-
-      const response = await getGeminiClient().models.generateContent({
-        model: GEMINI_MODEL,
-        contents: [{ role: 'user', parts }],
-        config: {
-          abortSignal: controller.signal,
-          temperature: 0,
-          maxOutputTokens: 512,
-          responseMimeType: 'application/json',
-          responseSchema,
+    if (input.image) {
+      parts.push({
+        inlineData: {
+          data: input.image.buffer.toString("base64"),
+          mimeType: input.image.mimeType,
         },
       });
-
-      const rawJson = response.text ? parseGeminiJson(response.text) : null;
-      return validateGeminiComplaintAnalysis(rawJson);
-    } finally {
-      clearTimeout(timeout);
     }
-  } catch {
+
+    console.log("🚀 Sending request to Gemini...");
+
+    const response = await getGeminiClient().models.generateContent({
+      model: GEMINI_MODEL,
+      contents: [{ role: "user", parts }],
+      config: {
+        temperature: 0,
+        responseMimeType: "application/json",
+      },
+    });
+
+    console.log("✅ Gemini raw response:");
+    console.log(response.text);
+
+    if (!response.text) {
+      console.log("❌ Empty Gemini response");
+      return null;
+    }
+
+    const parsed = JSON.parse(response.text);
+
+    console.log("✅ Parsed JSON:");
+    console.log(parsed);
+
+    return validateGeminiComplaintAnalysis(parsed);
+  } catch (err) {
+    console.error("❌ Gemini ERROR:");
+    console.error(err);
     return null;
   }
 };
