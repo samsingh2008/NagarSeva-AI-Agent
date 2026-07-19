@@ -294,7 +294,7 @@ export const analyzeComplaintWithGemini = async (input: GeminiComplaintInput): P
       });
 
       const response = await getGeminiClient().models.generateContent({
-        model,
+        model: getGeminiModel(),
         contents: [{ role: 'user', parts }],
         config: {
           abortSignal: controller.signal,
