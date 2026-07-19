@@ -2,8 +2,7 @@ import { GoogleGenAI } from '@google/genai';
 
 let geminiClient: GoogleGenAI | null = null;
 let geminiClientKey: string | null = null;
-
-export const DEFAULT_GEMINI_MODEL = 'gemini-2.5-flash-lite';
+export const DEFAULT_GEMINI_MODEL = 'gemini-2.5-flash';
 
 export const getGeminiApiKey = () => process.env.GEMINI_API_KEY?.trim() || '';
 
