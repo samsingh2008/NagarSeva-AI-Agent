@@ -1,7 +1,8 @@
+import { apiUrl } from '@/lib/api';
 import { Suspense } from 'react';
 
 async function fetchHeatmapData() {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/safety/heatmap`, {
+  const response = await fetch(apiUrl('/safety/heatmap'), {
     cache: 'no-store',
   });
 

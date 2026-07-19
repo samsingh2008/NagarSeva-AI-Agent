@@ -3,9 +3,8 @@
  */
 
 import { useState, useCallback } from 'react';
+import { apiUrl } from '@/lib/api';
 import { validateComplaintForm, ValidationError } from '@/utils/validation';
-
-const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
 export interface ComplaintFormState {
   image: File | null;
@@ -215,7 +214,7 @@ export const useComplaintForm = () => {
       formData.append('longitude', payload.longitude.toString());
     }
 
-    const response = await fetch(`${apiBaseUrl}/complaints`, {
+    const response = await fetch(apiUrl('/complaints'), {
       method: 'POST',
       body: formData,
     });

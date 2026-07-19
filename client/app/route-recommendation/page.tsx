@@ -1,5 +1,6 @@
 "use client";
 
+import { apiUrl } from '@/lib/api';
 import { useState } from 'react';
 
 export default function RouteRecommendationPage() {
@@ -20,7 +21,7 @@ export default function RouteRecommendationPage() {
       const [originLat, originLng] = origin.split(',').map((value) => Number(value.trim()));
       const [destinationLat, destinationLng] = destination.split(',').map((value) => Number(value.trim()));
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/complaints/route-recommendation`, {
+      const response = await fetch(apiUrl('/complaints/route-recommendation'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

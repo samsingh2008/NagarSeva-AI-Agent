@@ -1,9 +1,10 @@
+import { apiUrl } from '@/lib/api';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
-    const backendUrl = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/complaints`;
+    const backendUrl = apiUrl('/complaints');
 
     const backendResponse = await fetch(backendUrl, {
       method: 'POST',

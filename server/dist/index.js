@@ -2,21 +2,36 @@ import express from 'express';
 import cors from 'cors';
 import 'dotenv/config';
 import connectDB from './config/database.js';
-import complaintRoutes from './routes/complaints.js';
-import safetyRoutes from './routes/safety.js';
+import apiRoutes from './routes/index.js';
 import { errorHandler } from './middleware/errorHandler.js';
 const app = express();
 const requestedPort = Number(process.env.PORT || 5000);
+const normalizeOrigin = (origin) => origin.trim().replace(/\/+$/, '');
+const allowedOrigins = new Set([
+    'http://localhost:3000',
+    'https://nagar-seva-ai-agent-f7ap.vercel.app',
+].map(normalizeOrigin));
+if (process.env.CORS_ORIGIN) {
+    process.env.CORS_ORIGIN.split(',')
+        .map(normalizeOrigin)
+        .filter(Boolean)
+        .forEach((origin) => allowedOrigins.add(origin));
+}
 app.use(cors({
-    origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+    origin(origin, callback) {
+        if (!origin || allowedOrigins.has(normalizeOrigin(origin))) {
+            callback(null, true);
+            return;
+        }
+        callback(null, false);
+    },
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.get('/health', (req, res) => {
     res.status(200).json({ message: 'Server is running' });
 });
-app.use('/api/complaints', complaintRoutes);
-app.use('/api/safety', safetyRoutes);
+app.use('/api', apiRoutes);
 app.use(errorHandler);
 const listenOnPort = (port) => {
     return new Promise((resolve, reject) => {

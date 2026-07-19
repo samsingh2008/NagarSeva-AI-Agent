@@ -1,7 +1,8 @@
+import { apiUrl } from '@/lib/api';
 import { Suspense } from 'react';
 
 async function fetchTrackingData() {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/complaints`, {
+  const response = await fetch(apiUrl('/complaints'), {
     cache: 'no-store',
   });
 

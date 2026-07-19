@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "verify:api-urls": "node scripts/verify-api-urls.mjs"
   },
   "dependencies": {
     "react": "^18.2.0",
