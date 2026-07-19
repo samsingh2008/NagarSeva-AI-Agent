@@ -12,6 +12,7 @@ const normalizeOrigin = (origin: string) => origin.trim().replace(/\/+$/, '');
 const allowedOrigins = new Set([
   'http://localhost:3000',
   'https://nagar-seva-ai-agent-f7ap.vercel.app',
+  'https://nagar-seva-ai-agent-f7ap-nagarseva.vercel.app',
 ].map(normalizeOrigin));
 
 if (process.env.CORS_ORIGIN) {
