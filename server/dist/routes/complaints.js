@@ -7,8 +7,8 @@ router.get('/', getComplaints);
 router.get('/heatmap', getSafetyHeatmap);
 router.get('/dashboard', getDashboardSummary);
 router.post('/route-recommendation', getRouteRecommendation);
-router.get('/:id', getComplaintById);
 router.patch('/:id/status', updateComplaintStatus);
 router.post('/:id/check-escalation', checkEscalation);
+router.get('/:id', getComplaintById);
 export default router;
 //# sourceMappingURL=complaints.js.map

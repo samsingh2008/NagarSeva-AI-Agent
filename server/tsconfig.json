@@ -10,13 +10,14 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
+    "forceConsistentCasingInFileNames": true,
 
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
 
+    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
       "@/routes/*": ["./src/routes/*"],
